@@ -64,7 +64,7 @@ A full-featured Telegram bot built with Pyrogram for recording M3U8 streams, dow
 
 ## Recording Features
 - Quality: 360p / 480p / 720p / 1080p / Best
-- Aspect Ratio: Original / 16:9 / 4:3 / Black Bars
+- Aspect Ratio: Original / 16:9 / 4:3 / 1536 × 864 / Black Bars
 - Audio Tracks: Telugu / Hindi / Tamil / Malayalam / Kannada / Bengali / Marathi / Odia / English / All Tracks
 - Real-time progress: dots progress bar, size, speed, ETA
 - File naming: `LittleSinghamChannel.[DD-MM-YYYY].[HH:MM:SS AM].RESOp.[Lang].MP32.0.128K.H264.mp4`
