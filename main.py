@@ -322,23 +322,35 @@ async def run_ffmpeg_record(
     status_msg: Message = rec["status_msg"]
     vf = build_vf_filter(quality, aspect)
 
-    cmd = ["ffmpeg", "-y", "-i", link]
-    if duration_sec > 0:
-        cmd += ["-t", str(duration_sec)]
-    cmd += ["-map", "0:v", "-map", "0:a?"]
-    if quality != "Best":
-        if vf:
-            cmd += ["-vf", vf]
-        cmd += ["-c:v", "libx264", "-preset", "fast", "-crf", "23"]
-    else:
-        cmd += ["-c:v", "copy"]
-    cmd += [
-        "-c:a", "aac", "-b:a", "128k",
-        "-movflags", "+faststart",
-        "-progress", "pipe:1",
-        "-nostats",
-        output_file,
-    ]
+    cmd = [
+    "ffmpeg",
+    "-y",
+    "-user_agent", "Mozilla/5.0",
+    "-protocol_whitelist", "file,http,https,tcp,tls",
+    "-headers", "Referer: https://ranapk.online",
+    "-i", link
+]
+
+if duration_sec > 0:
+    cmd += ["-t", str(duration_sec)]
+
+cmd += ["-map", "0:v", "-map", "0:a?"]
+
+if quality != "Best":
+    if vf:
+        cmd += ["-vf", vf]
+    cmd += ["-c:v", "libx264", "-preset", "fast", "-crf", "23"]
+else:
+    cmd += ["-c:v", "copy"]
+
+cmd += [
+    "-c:a", "aac",
+    "-b:a", "128k",
+    "-movflags", "+faststart",
+    "-progress", "pipe:1",
+    "-nostats",
+    output_file,
+]
 
     proc = await asyncio.create_subprocess_exec(
         *cmd,
