@@ -331,6 +331,31 @@ async def run_ffmpeg_record(
     "-i", link
 ]
 
+# Duration set करें अगर >0 हो
+if duration_sec > 0:
+    cmd += ["-t", str(duration_sec)]
+
+# Map video & audio streams
+cmd += ["-map", "0:v", "-map", "0:a?"]
+
+# Video encoding based on quality
+if quality != "Best":
+    if vf:
+        cmd += ["-vf", vf]
+    cmd += ["-c:v", "libx264", "-preset", "fast", "-crf", "23"]
+else:
+    cmd += ["-c:v", "copy"]
+
+# Audio & output settings
+cmd += [
+    "-c:a", "aac",
+    "-b:a", "128k",
+    "-movflags", "+faststart",
+    "-progress", "pipe:1",
+    "-nostats",
+    output_file,
+]
+
 if duration_sec > 0:
     cmd += ["-t", str(duration_sec)]
 
